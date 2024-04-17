@@ -39,9 +39,7 @@ class LoginActivity : AppCompatActivity() {
             GlobalScope.launch(Dispatchers.IO) {
                 isConnected = sendLoginCommand(ipAddress, port, username, password)
                 if (isConnected) {
-                    val intent = Intent(this@LoginActivity, ChangeLayoutActivity::class.java)
-                    startActivity(intent)
-                    finish() // Finish LoginActivity to prevent going back to it using back button
+                    startRectangleModeActivity(ipAddress, port, username, password)
                 } else {
                     runOnUiThread {
                         // Handle connection failure (e.g., show error message)
@@ -78,5 +76,15 @@ class LoginActivity : AppCompatActivity() {
 
         return isConnected
     }
+
+    private fun startRectangleModeActivity(ipAddress: String, port: Int, username: String, password: String) {
+        val intent = Intent(this@LoginActivity, ChangeLayoutActivity::class.java).apply {
+            putExtra("IP_ADDRESS", ipAddress)
+            putExtra("PORT", port)
+        }
+        startActivity(intent)
+        finish() // Finish LoginActivity to prevent going back to it using back button
+    }
+
 
 }
